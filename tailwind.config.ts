@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom Nasaruni colors
+				nasaruni: {
+					red: '#B91C1C',      // Maasai red
+					brown: '#A3541F',     // Earth brown
+					blue: '#0EA5E9',      // Sky blue
+					green: '#16A34A',     // Sage green
+					orange: '#EA580C',    // Sunset orange
+					cream: '#FEF7ED',     // Warm cream
+					gold: '#D97706'       // Golden yellow
 				}
 			},
 			borderRadius: {
@@ -84,11 +95,31 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'slide-in-right': {
+					'0%': { transform: 'translateX(100%)' },
+					'100%': { transform: 'translateX(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.6s ease-out',
+				'slide-in-right': 'slide-in-right 0.5s ease-out'
+			},
+			backgroundImage: {
+				'gradient-nasaruni': 'linear-gradient(135deg, #B91C1C 0%, #EA580C 50%, #D97706 100%)',
+				'gradient-earth': 'linear-gradient(135deg, #A3541F 0%, #16A34A 100%)'
 			}
 		}
 	},
