@@ -2,11 +2,19 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -18,6 +26,10 @@ const Header = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
@@ -51,8 +63,29 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
+          {/* Desktop Auth & CTA */}
+          <div className="hidden lg:flex items-center space-x-4">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                    <User size={16} />
+                    <span>Account</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut size={16} className="mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild variant="outline" size="sm">
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            )}
+            
             <Button 
               asChild
               className="bg-nasaruni-red hover:bg-nasaruni-red/90 text-white px-6"
@@ -88,14 +121,33 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Button 
-                asChild
-                className="bg-nasaruni-red hover:bg-nasaruni-red/90 text-white w-full mt-4"
-              >
-                <Link to="/get-involved" onClick={() => setIsMenuOpen(false)}>
-                  Donate Now
-                </Link>
-              </Button>
+              
+              <div className="pt-4 border-t border-gray-200 space-y-2">
+                {user ? (
+                  <Button 
+                    onClick={handleSignOut}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Sign Out
+                  </Button>
+                ) : (
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                      Sign In
+                    </Link>
+                  </Button>
+                )}
+                
+                <Button 
+                  asChild
+                  className="bg-nasaruni-red hover:bg-nasaruni-red/90 text-white w-full"
+                >
+                  <Link to="/get-involved" onClick={() => setIsMenuOpen(false)}>
+                    Donate Now
+                  </Link>
+                </Button>
+              </div>
             </nav>
           </div>
         )}
